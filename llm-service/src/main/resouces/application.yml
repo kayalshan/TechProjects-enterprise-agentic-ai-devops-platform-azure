@@ -1,0 +1,15 @@
+llm:
+  provider: OPENAI   # default
+
+openai:
+  api-key: YOUR_OPENAI_KEY
+  url: https://api.openai.com/v1/chat/completions
+
+azure:
+  api-key: YOUR_AZURE_KEY
+  endpoint: https://your-resource.openai.azure.com
+  deployment: gpt-4
+
+local:
+  url: http://localhost:11434/api/generate
+  model: llama3

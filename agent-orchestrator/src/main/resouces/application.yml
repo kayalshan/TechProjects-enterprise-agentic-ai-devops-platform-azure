@@ -1,0 +1,12 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: agent-orchestrator
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+logging:
+  level:
+    root: INFO
