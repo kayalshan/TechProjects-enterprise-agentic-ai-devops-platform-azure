@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tools-service
+  labels:
+    app: tools-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tools-service
+  template:
+    metadata:
+      labels:
+        app: tools-service
+    spec:
+      containers:
+        - name: tools-service
+          image: tools-service:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8083
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8083
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tools-service
+spec:
+  type: ClusterIP
+  selector:
+    app: tools-service
+  ports:
+    - port: 8083
+      targetPort: 8083
