@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - agent-orchestrator
+
+  agent-orchestrator:
+    build: ./agent-orchestrator
+    ports:
+      - "8090:8090"
+    depends_on:
+      - llm-service
+      - rag-service
+      - tools-service
+
+  llm-service:
+    build: ./llm-service
+    ports:
+      - "8100:8100"
+
+  rag-service:
+    build: ./rag-service
+    ports:
+      - "8110:8110"
+
+  tools-service:
+    build: ./tools-service
+    ports:
+      - "8120:8120"

@@ -1,0 +1,12 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: rag-service
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+logging:
+  level:
+    root: INFO
