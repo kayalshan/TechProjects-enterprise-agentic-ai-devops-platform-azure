@@ -1,3 +1,13 @@
+package com.enterprise.agentic.ragservice.client;
+
+import com.enterprise.agentic.ragservice.config.RagProperties;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
+
 @Component
 public class EmbeddingClient {
 
@@ -22,8 +32,24 @@ public class EmbeddingClient {
     }
 
     private float[] extractEmbedding(JsonNode json) {
+        if (json == null || !json.has("data") || json.path("data").isEmpty()) {
+            throw new RuntimeException("Invalid embedding response: missing or empty data");
+        }
 
-        JsonNode embeddingNode = json.path("data").get(0).path("embedding");
+        JsonNode data = json.path("data");
+        if (!data.isArray() || data.size() == 0) {
+            throw new RuntimeException("Invalid embedding response: data is not an array or is empty");
+        }
+
+        JsonNode firstItem = data.get(0);
+        if (!firstItem.has("embedding")) {
+            throw new RuntimeException("Invalid embedding response: missing embedding field");
+        }
+
+        JsonNode embeddingNode = firstItem.path("embedding");
+        if (!embeddingNode.isArray()) {
+            throw new RuntimeException("Invalid embedding response: embedding is not an array");
+        }
 
         float[] vector = new float[embeddingNode.size()];
 

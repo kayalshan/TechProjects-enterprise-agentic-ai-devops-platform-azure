@@ -1,3 +1,12 @@
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class RagServiceTest {
 
     @Test
@@ -18,5 +27,32 @@ class RagServiceTest {
         StepVerifier.create(service.enrich(new RagRequest("db timeout")))
                 .expectNextMatches(r -> r.context().contains("Database"))
                 .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnMatchingContextFromFallbackRepository() {
+        InMemoryRagRepository repo = new InMemoryRagRepository();
+
+        String context = repo.findRelevantContext("Error: connection refused by API");
+
+        Assertions.assertEquals("Service may be down", context);
+    }
+
+    @Test
+    void shouldReturnNoContextForUnknownLog() {
+        InMemoryRagRepository repo = new InMemoryRagRepository();
+
+        String context = repo.findRelevantContext("some random log text");
+
+        Assertions.assertEquals("No context found", context);
+    }
+
+    @Test
+    void shouldBeCaseInsensitiveAndHandleBlankOrNull() {
+        InMemoryRagRepository repo = new InMemoryRagRepository();
+
+        Assertions.assertEquals("Database overload during peak traffic", repo.findRelevantContext("DB TIMEOUT"));
+        Assertions.assertEquals("No context found", repo.findRelevantContext(""));
+        Assertions.assertEquals("No context found", repo.findRelevantContext(null));
     }
 }

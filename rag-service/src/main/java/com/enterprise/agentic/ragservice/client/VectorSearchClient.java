@@ -1,3 +1,15 @@
+package com.enterprise.agentic.ragservice.client;
+
+import com.enterprise.agentic.ragservice.config.RagProperties;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @Component
 public class VectorSearchClient {
 
@@ -31,15 +43,23 @@ public class VectorSearchClient {
     }
 
     private List<String> extractContexts(JsonNode json) {
+        if (json == null || !json.has("value")) {
+            return List.of("No relevant context found");
+        }
+
+        JsonNode docs = json.path("value");
+        if (!docs.isArray()) {
+            return List.of("No relevant context found");
+        }
 
         List<String> results = new ArrayList<>();
 
-        JsonNode docs = json.path("value");
-
         for (JsonNode doc : docs) {
-            String context = doc.path("content").asText();
-            if (!context.isEmpty()) {
-                results.add(context);
+            if (doc.has("content")) {
+                String context = doc.path("content").asText();
+                if (context != null && !context.trim().isEmpty()) {
+                    results.add(context);
+                }
             }
         }
 
