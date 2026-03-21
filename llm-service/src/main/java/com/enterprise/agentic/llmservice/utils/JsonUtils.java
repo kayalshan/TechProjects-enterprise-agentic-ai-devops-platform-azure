@@ -14,7 +14,7 @@ public class JsonUtils {
         // utility class
     }
 
-    // ✅ Extract JSON safely from LLM response
+    //  Extract JSON safely from LLM response
     public static String extractJson(String text) {
 
         if (text == null || text.isBlank()) {
@@ -37,7 +37,7 @@ public class JsonUtils {
         }
     }
 
-    // ✅ Parse JSON to Object
+    //  Parse JSON to Object
     public static <T> T parse(String json, Class<T> clazz) {
 
         try {
@@ -49,7 +49,7 @@ public class JsonUtils {
         }
     }
 
-    // ✅ Convert object to JSON (optional)
+    //  Convert object to JSON (optional)
     public static String toJson(Object obj) {
 
         try {
