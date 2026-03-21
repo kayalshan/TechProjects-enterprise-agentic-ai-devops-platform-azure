@@ -5,12 +5,20 @@ import com.enterprise.agentic.toolservice.dto.ToolsResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Component("send-alert")
+@Component
 public class AlertExecutor implements ToolExecutor {
 
     @Override
+    public String getName() {
+        return "send-alert";
+    }
+
+    @Override
     public Mono<ToolsResponse> execute(ToolsRequest request) {
-        // Simulate sending alert - in real implementation, integrate with Slack, Email, PagerDuty, etc.
+
+        // simulate alert
         return Mono.just(new ToolsResponse("SUCCESS", "Alert sent for: " + request.target()));
+    }
+}
     }
 }

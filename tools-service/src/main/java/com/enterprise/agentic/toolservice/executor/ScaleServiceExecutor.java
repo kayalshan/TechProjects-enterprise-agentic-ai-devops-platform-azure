@@ -6,19 +6,28 @@ import com.enterprise.agentic.toolservice.dto.ToolsResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Component("scale-service")
+@Component
 public class ScaleServiceExecutor implements ToolExecutor {
 
-    private final KubernetesClient kubernetesClient;
+    private final KubernetesClient client;
 
-    public ScaleServiceExecutor(KubernetesClient kubernetesClient) {
-        this.kubernetesClient = kubernetesClient;
+    public ScaleServiceExecutor(KubernetesClient client) {
+        this.client = client;
+    }
+
+    @Override
+    public String getName() {
+        return "scale-service";
     }
 
     @Override
     public Mono<ToolsResponse> execute(ToolsRequest request) {
-        return kubernetesClient.scaleService(request.target(), request.metadata())
-                .map(result -> new ToolsResponse("SUCCESS", "Service scaled: " + request.target()))
-                .onErrorResume(e -> Mono.just(new ToolsResponse("FAILED", "Failed to scale service: " + e.getMessage())));
+        try {
+            int replicas = Integer.parseInt(request.metadata());
+            return client.scale(request.target(), replicas)
+                    .then(Mono.just(new ToolsResponse("SUCCESS", "Scaled service: " + request.target() + " to " + replicas + " replicas")));
+        } catch (NumberFormatException e) {
+            return Mono.just(new ToolsResponse("FAILED", "Invalid replica count: " + request.metadata()));
+        }
     }
 }

@@ -11,20 +11,19 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/tools")
 public class ToolsController {
 
-    private final ToolsService toolsService;
+    private final ToolsService service;
 
-    public ToolsController(ToolsService toolsService) {
-        this.toolsService = toolsService;
+    public ToolsController(ToolsService service) {
+        this.service = service;
     }
 
     @PostMapping("/execute")
-    public Mono<ResponseEntity<ToolsResponse>> executeTool(@RequestBody ToolsRequest request) {
-        return toolsService.executeTool(request)
-                .map(ResponseEntity::ok);
+    public Mono<ResponseEntity<ToolsResponse>> execute(@RequestBody ToolsRequest request) {
+        return service.execute(request).map(ResponseEntity::ok);
     }
 
     @GetMapping("/ping")
-    public ResponseEntity<String> ping() {
-        return ResponseEntity.ok("Tools Service is running");
+    public Mono<String> ping() {
+        return Mono.just("Tools Service is up");
     }
 }

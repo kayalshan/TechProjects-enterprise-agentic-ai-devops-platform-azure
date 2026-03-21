@@ -6,19 +6,24 @@ import com.enterprise.agentic.toolservice.dto.ToolsResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Component("restart-service")
+@Component
 public class RestartServiceExecutor implements ToolExecutor {
 
-    private final KubernetesClient kubernetesClient;
+    private final KubernetesClient client;
 
-    public RestartServiceExecutor(KubernetesClient kubernetesClient) {
-        this.kubernetesClient = kubernetesClient;
+    public RestartServiceExecutor(KubernetesClient client) {
+        this.client = client;
+    }
+
+    @Override
+    public String getName() {
+        return "restart-service";
     }
 
     @Override
     public Mono<ToolsResponse> execute(ToolsRequest request) {
-        return kubernetesClient.restartService(request.target())
-                .map(result -> new ToolsResponse("SUCCESS", "Service restarted: " + request.target()))
-                .onErrorResume(e -> Mono.just(new ToolsResponse("FAILED", "Failed to restart service: " + e.getMessage())));
+
+        return client.restart(request.target())
+                .then(Mono.just(new ToolsResponse("SUCCESS", "Service restarted: " + request.target())));
     }
 }
