@@ -1,20 +1,22 @@
-package com.enterprise.agentic.ragservice;
-
-import com.enterprise.agentic.ragservice.dto.RagRequest;
-import com.enterprise.agentic.ragservice.service.RagService;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 class RagServiceTest {
 
-    private final RagService ragService = new RagService();
-
     @Test
-    void testProcessQuery() {
-        var request = new RagRequest("Welcome To Agentic AI");
-        var response = ragService.processQuery(request);
-        assertNotNull(response);
-        assertTrue(response.answer().contains("Welcome To Agentic AI"));
-        assertEquals("Simulated Knowledge Base", response.source());
+    void shouldUseFallbackWhenVectorFails() {
+
+        EmbeddingClient embedding = mock(EmbeddingClient.class);
+        VectorSearchClient vector = mock(VectorSearchClient.class);
+        InMemoryRagRepository repo = new InMemoryRagRepository();
+
+        when(embedding.getEmbedding(any()))
+                .thenReturn(Mono.just(new float[]{1f}));
+
+        when(vector.search(any()))
+                .thenReturn(Mono.error(new RuntimeException()));
+
+        RagService service = new RagService(embedding, vector, repo);
+
+        StepVerifier.create(service.enrich(new RagRequest("db timeout")))
+                .expectNextMatches(r -> r.context().contains("Database"))
+                .verifyComplete();
     }
 }

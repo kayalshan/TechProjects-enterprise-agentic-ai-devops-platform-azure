@@ -1,12 +1,6 @@
-server:
-  port: 8082
-
-spring:
-  application:
-    name: rag-service
-  jackson:
-    serialization:
-      INDENT_OUTPUT: true
-logging:
-  level:
-    root: INFO
+rag:
+  embedding-url: https://your-openai-endpoint
+  embedding-deployment: embedding-model
+  search-url: https://your-search-service.search.windows.net
+  index-name: log-index
+  api-key: YOUR_KEY

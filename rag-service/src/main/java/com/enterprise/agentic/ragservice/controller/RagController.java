@@ -12,20 +12,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rag")
 public class RagController {
 
-    private final RagService ragService;
+    private final RagService service;
 
-    public RagController(RagService ragService) {
-        this.ragService = ragService;
+    public RagController(RagService service) {
+        this.service = service;
     }
 
-    @PostMapping("/query")
-    public ResponseEntity<ApiResponse<RagResponse>> query(@Valid @RequestBody RagRequest request) {
-        RagResponse response = ragService.processQuery(request);
-        return ResponseEntity.ok(new ApiResponse<>(response, "success"));
+    @PostMapping("/enrich")
+    public Mono<ResponseEntity<RagResponse>> enrich(@RequestBody RagRequest request) {
+        return service.enrich(request).map(ResponseEntity::ok);
     }
 
     @GetMapping("/ping")
-    public ResponseEntity<ApiResponse<String>> ping() {
-        return ResponseEntity.ok(new ApiResponse<>("RAG Service is up!", "success"));
+    public Mono<String> ping() {
+        return Mono.just("RAG Service is up");
     }
 }
