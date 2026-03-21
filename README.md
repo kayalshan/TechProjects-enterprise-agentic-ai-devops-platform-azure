@@ -1,5 +1,4 @@
-# TechProjects
-# Enterprise Agentic AI DevOps Platform (Azure)
+# TechProjects - Enterprise Agentic AI DevOps Platform (Azure)
 
 ## Overview
 This project demonstrates a production-grade Agentic AI platform built using Java and Azure.
@@ -21,8 +20,18 @@ Client → Gateway → Agent → LLM → RAG → Vector DB → Tools → Data
 - Kubernetes deployment ready
 
 ## Tech Stack
-Java | Spring Boot | Azure OpenAI | Azure AI Search | Docker | Kubernetes
+## CORE :  Java | Spring Boot | Azure OpenAI | Azure AI Search | Docker | Kubernetes
+Backend & Core Development
 
+Java 17
+
+Spring Boot 3.x
+
+Spring Web (REST APIs)
+
+Spring WebFlux (for async LLM integrations)
+
+Maven (Multi-module project)
 ## Use Case
 Input:
 "NullPointerException in PaymentService"

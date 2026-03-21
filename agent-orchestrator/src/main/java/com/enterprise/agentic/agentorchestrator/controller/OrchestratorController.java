@@ -12,21 +12,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/orchestrator")
 public class OrchestratorController {
 
-    private final AgentOrchestratorService orchestratorService;
+    private final AgentOrchestratorService service;
 
-    public OrchestratorController(AgentOrchestratorService orchestratorService) {
-        this.orchestratorService = orchestratorService;
+    public OrchestratorController(AgentOrchestratorService service) {
+        this.service = service;
     }
 
-    @PostMapping("/execute-task")
-    public ResponseEntity<ApiResponse<OrchestratorResponse>> executeTask(
+    @PostMapping("/analyze-log")
+    public ResponseEntity<ApiResponse<OrchestratorResponse>> analyze(
             @Valid @RequestBody OrchestratorRequest request) {
-        OrchestratorResponse response = orchestratorService.executeTask(request);
-        return ResponseEntity.ok(new ApiResponse<>(response, "success"));
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(service.process(request), "SUCCESS")
+        );
     }
 
     @GetMapping("/ping")
     public ResponseEntity<ApiResponse<String>> ping() {
-        return ResponseEntity.ok(new ApiResponse<>("Agent Orchestrator is up!", "success"));
+        return ResponseEntity.ok(
+                new ApiResponse<>("Orchestrator is UP", "SUCCESS")
+        );
     }
 }

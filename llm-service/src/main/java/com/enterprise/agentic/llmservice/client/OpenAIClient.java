@@ -1,4 +1,4 @@
-package com.enterprise.agentic.llmservice.service.client;
+package com.enterprise.agentic.llmservice.client;
 
 import com.enterprise.agentic.llmservice.dto.LlmRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,37 +6,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-public class OpenAiClient {
+public class OpenAiClient implements LlmClient {
 
-    @Value("${openai.api-key}")
-    private String apiKey;
+    private final WebClient webClient;
 
-    @Value("${openai.url}")
-    private String url;
+    public OpenAiClient(WebClient.Builder builder, LlmProperties props) {
+        this.webClient = builder.baseUrl(props.getOpenaiUrl()).build();
+    }
 
-    private final WebClient webClient = WebClient.builder().build();
-
-    public String call(String prompt, LlmRequest request) {
-
-        String body = """
-        {
-          "model": "%s",
-          "messages": [{"role": "user", "content": "%s"}],
-          "temperature": %s
-        }
-        """.formatted(
-                request.model() != null ? request.model() : "gpt-4",
-                prompt,
-                request.temperature() != null ? request.temperature() : 0.7
-        );
+    @Override
+    public Mono<String> call(String prompt) {
 
         return webClient.post()
-                .uri(url)
-                .header("Authorization", "Bearer " + apiKey)
-                .header("Content-Type", "application/json")
-                .bodyValue(body)
+                .uri("/v1/chat/completions")
+                .header("Authorization", "Bearer YOUR_KEY")
+                .bodyValue(Map.of(
+                        "model", "gpt-4o-mini",
+                        "messages", List.of(Map.of("role", "user", "content", prompt))
+                ))
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToMono(String.class);
     }
 }

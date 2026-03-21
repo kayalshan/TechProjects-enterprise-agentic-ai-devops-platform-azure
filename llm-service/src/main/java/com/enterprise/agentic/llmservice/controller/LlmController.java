@@ -5,10 +5,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/llm")
 public class LlmController {
 
-    @GetMapping("/llm/ping")
-    public ApiResponse<String> ping() {
-        return new ApiResponse<>("LLM Service is up!", "success");
+    private final LlmService service;
+
+    public LlmController(LlmService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/analyze")
+    public Mono<ResponseEntity<RcaResponse>> analyze(@RequestBody LlmRequest request) {
+
+        return service.analyze(request)
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/ping")
+    public Mono<String> ping() {
+        return Mono.just("LLM Service is up");
     }
 }

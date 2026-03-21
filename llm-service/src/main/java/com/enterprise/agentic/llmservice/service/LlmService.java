@@ -11,79 +11,75 @@ import com.enterprise.agentic.llmservice.client.OpenAiClient;
 import com.enterprise.agentic.llmservice.client.AzureOpenAiClient;
 import com.enterprise.agentic.llmservice.client.LocalLlmClient;
 import java.time.LocalDateTime;
+import com.enterprise.agentic.llmservice.enums.LlmProvider;
+
 
 @Service
 public class LlmService {
 
-    private static final Logger log = LoggerFactory.getLogger(LlmService.class);
-
     private final OpenAiClient openAiClient;
     private final AzureOpenAiClient azureClient;
     private final LocalLlmClient localClient;
+    private final LlmProperties props;
 
     public LlmService(OpenAiClient openAiClient,
                       AzureOpenAiClient azureClient,
-                      LocalLlmClient localClient) {
+                      LocalLlmClient localClient,
+                      LlmProperties props) {
         this.openAiClient = openAiClient;
         this.azureClient = azureClient;
         this.localClient = localClient;
+        this.props = props;
     }
 
-    public LlmResponse processRequest(LlmRequest request) {
+    public Mono<RcaResponse> analyze(LlmRequest request) {
 
-        long start = System.currentTimeMillis();
+        String prompt = buildPrompt(request.logMessage(), request.context());
 
-        try {
-            LlmProvider provider = resolveProvider(request);
+        return getClient()
+                .call(prompt)
+                .map(JsonUtils::extractJson)
+                .map(json -> JsonUtils.parse(json, RcaResponse.class));
+    }
 
-            String prompt = buildPrompt(request);
+    // private LlmClient getClient() {
+    //     return switch (props.getProvider()) {
+    //         case "azure" -> azureClient;
+    //         case "local" -> localClient;
+    //         default -> openAiClient;
+    //     };
+    // }
+    private LlmClient getClient() {
 
-            String response;
+        LlmProvider provider = LlmProvider.from(props.getProvider());
 
-            switch (provider) {
-                case AZURE -> response = azureClient.call(prompt, request);
-                case LOCAL -> response = localClient.call(prompt, request);
-                case OPENAI -> response = openAiClient.call(prompt, request);
-                default -> throw new LlmServiceException("Unsupported provider");
-            }
+        return switch (provider) {
+            case AZURE -> azureClient;
+            case LOCAL -> localClient;
+            default -> openAiClient;
+        };
+    }
+    private String buildPrompt(String log, String context) {
 
-            long latency = System.currentTimeMillis() - start;
+        return """
+        You are a DevOps AI assistant.
 
-            return new LlmResponse(
-                    response,
-                    provider.name(),
-                    request.model(),
-                    estimateTokens(prompt, response),
-                    latency,
-                    LocalDateTime.now()
-            );
+        Analyze the log and return STRICT JSON only.
 
-        } catch (Exception ex) {
-            log.error("LLM processing failed", ex);
-            throw new LlmServiceException("LLM processing failed", ex);
+        Log:
+        %s
+
+        Context:
+        %s
+
+        Output:
+        {
+          "rootCause": "",
+          "impact": "",
+          "severity": "LOW|MEDIUM|HIGH",
+          "suggestedAction": "",
+          "toolName": "restart-service | fetch-logs | check-health"
         }
-    }
-
-    private LlmProvider resolveProvider(LlmRequest request) {
-        if (request.provider() != null) {
-            return LlmProvider.valueOf(request.provider().toUpperCase());
-        }
-        return LlmProvider.OPENAI;
-    }
-
-    private String buildPrompt(LlmRequest request) {
-        StringBuilder prompt = new StringBuilder();
-
-        if (request.context() != null) {
-            prompt.append("Context:\n").append(request.context()).append("\n\n");
-        }
-
-        prompt.append("User Query:\n").append(request.query()).append("\n\nAnswer:");
-
-        return prompt.toString();
-    }
-
-    private long estimateTokens(String input, String output) {
-        return (input.length() + output.length()) / 4;
+        """.formatted(log, context);
     }
 }

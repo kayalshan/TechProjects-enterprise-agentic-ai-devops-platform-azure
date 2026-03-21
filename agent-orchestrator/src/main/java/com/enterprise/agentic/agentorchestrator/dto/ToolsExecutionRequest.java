@@ -1,6 +1,6 @@
 package com.enterprise.agentic.agentorchestrator.dto;
 
-public record OrchestratorRequest(
-        String logMessage,
+public record ToolExecutionRequest(
+        String toolName,
         String serviceName
 ) {}

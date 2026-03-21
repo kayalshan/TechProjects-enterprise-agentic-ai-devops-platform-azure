@@ -1,43 +1,37 @@
-package com.enterprise.agentic.llmservice.service.client;
+package com.enterprise.agentic.llmservice.client;
 
-import com.enterprise.agentic.llmservice.dto.LlmRequest;
-import org.springframework.beans.factory.annotation.Value;
+import com.enterprise.agentic.llmservice.config.LlmProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
+import java.util.List;
 
 @Component
-public class AzureOpenAiClient {
+public class AzureOpenAiClient implements LlmClient {
 
-    @Value("${azure.api-key}")
-    private String apiKey;
+    private final WebClient webClient;
+    private final LlmProperties props;
 
-    @Value("${azure.endpoint}")
-    private String endpoint;
+    public AzureOpenAiClient(WebClient.Builder builder, LlmProperties props) {
+        this.props = props;
+        this.webClient = builder.baseUrl(props.getAzureUrl()).build();
+    }
 
-    @Value("${azure.deployment}")
-    private String deployment;
-
-    private final WebClient webClient = WebClient.builder().build();
-
-    public String call(String prompt, LlmRequest request) {
-
-        String url = endpoint + "/openai/deployments/" + deployment + "/chat/completions?api-version=2024-02-15-preview";
-
-        String body = """
-        {
-          "messages": [{"role": "user", "content": "%s"}],
-          "temperature": %s
-        }
-        """.formatted(prompt,
-                request.temperature() != null ? request.temperature() : 0.7);
+    @Override
+    public Mono<String> call(String prompt) {
 
         return webClient.post()
-                .uri(url)
-                .header("api-key", apiKey)
-                .header("Content-Type", "application/json")
-                .bodyValue(body)
+                .uri("/openai/deployments/" + props.getAzureDeployment()
+                        + "/chat/completions?api-version=2024-02-15-preview")
+                .header("api-key", props.getAzureApiKey())
+                .bodyValue(Map.of(
+                        "messages", List.of(
+                                Map.of("role", "user", "content", prompt)
+                        )
+                ))
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToMono(String.class);
     }
 }
