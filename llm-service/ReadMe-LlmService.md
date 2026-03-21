@@ -183,7 +183,6 @@ The LLM Service is the intelligence layer of the platform, responsible for trans
 
 ---
 
-
 ## Folder Structure
 llm-service/
 ├── controller/
@@ -213,3 +212,19 @@ llm-service/
 │   └── JsonUtils.java
 │
 └── LlmServiceApplication.java
+
+## Test Case
+
+src/test/java/com/enterprise/agentic/llmservice/
+├── controller/
+│   └── LlmControllerTest.java
+│
+├── service/
+│   └── LlmServiceTest.java
+│
+├── util/
+│   └── JsonUtilsTest.java
+│
+├── exception/
+│   └── GlobalExceptionHandlerTest.java
+
