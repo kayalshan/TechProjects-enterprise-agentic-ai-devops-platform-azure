@@ -21,7 +21,7 @@ public class WebClientConfig {
 
     private static final Logger log = LoggerFactory.getLogger(WebClientConfig.class);
 
-    // ✅ Connection Pool
+    //  Connection Pool
     @Bean
     public ConnectionProvider connectionProvider() {
         return ConnectionProvider.builder("rag-connection-pool")
@@ -33,7 +33,7 @@ public class WebClientConfig {
                 .build();
     }
 
-    // ✅ Http Client with timeouts
+    //  Http Client with timeouts
     @Bean
     public HttpClient httpClient(ConnectionProvider provider) {
         return HttpClient.create(provider)
@@ -45,7 +45,7 @@ public class WebClientConfig {
                 );
     }
 
-    // ✅ WebClient Builder
+    //  WebClient Builder
     @Bean
     public WebClient.Builder webClientBuilder(HttpClient httpClient) {
 
@@ -57,30 +57,30 @@ public class WebClientConfig {
                 .filter(errorHandler());
     }
 
-    // ✅ Request Logging
+    //  Request Logging
     private ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(request -> {
-            log.info("➡️ {} {}", request.method(), request.url());
+            log.info(" {} {}", request.method(), request.url());
             return reactor.core.publisher.Mono.just(request);
         });
     }
 
-    // ✅ Response Logging
+    //  Response Logging
     private ExchangeFilterFunction logResponse() {
         return ExchangeFilterFunction.ofResponseProcessor(response -> {
-            log.info("⬅️ Status: {}", response.statusCode());
+            log.info(" Status: {}", response.statusCode());
             return reactor.core.publisher.Mono.just(response);
         });
     }
 
-    // ✅ Error Handling
+    //  Error Handling
     private ExchangeFilterFunction errorHandler() {
         return ExchangeFilterFunction.ofResponseProcessor(response -> {
 
             if (response.statusCode().isError()) {
                 return response.bodyToMono(String.class)
                         .flatMap(error -> {
-                            log.error("❌ API Error: {}", error);
+                            log.error(" API Error: {}", error);
                             return reactor.core.publisher.Mono.error(
                                     new RuntimeException("External API Error: " + error)
                             );
