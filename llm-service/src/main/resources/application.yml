@@ -1,16 +1,14 @@
 server:
-  port: 8120
+  port: 8100
 
 spring:
   application:
-    name: tools-service
+    name: llm-service
   profiles:
     active: dev
 
-tools:
-  azure-subscription-id: ${AZURE_SUBSCRIPTION_ID}
-  azure-resource-group: ${AZURE_RESOURCE_GROUP}
-  azure-workspace-name: ${AZURE_WORKSPACE_NAME}
+llm:
+  provider: ${LLM_PROVIDER:openai}
 
 management:
   endpoints:

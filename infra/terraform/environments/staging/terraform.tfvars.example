@@ -1,0 +1,7 @@
+# Azure Configuration
+location = "East US"
+tenant_id = "your-tenant-id"
+terraform_object_id = "your-terraform-service-principal-object-id"
+
+# API Keys (store securely, not in version control)
+openai_api_key = "your-openai-api-key"

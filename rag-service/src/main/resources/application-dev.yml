@@ -1,0 +1,10 @@
+rag:
+  embedding-url: https://your-openai-endpoint
+  embedding-deployment: embedding-model
+  search-url: https://your-search-service.search.windows.net
+  index-name: log-index
+  api-key: YOUR_KEY
+
+logging:
+  level:
+    com.enterprise.agentic: DEBUG

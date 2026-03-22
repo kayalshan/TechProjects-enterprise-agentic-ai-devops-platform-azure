@@ -1,0 +1,11 @@
+rag:
+  embedding-url: ${AZURE_EMBEDDING_URL}
+  embedding-deployment: ${AZURE_EMBEDDING_DEPLOYMENT}
+  search-url: ${AZURE_SEARCH_URL}
+  index-name: ${AZURE_SEARCH_INDEX:log-index}
+  api-key: ${AZURE_SEARCH_API_KEY}
+
+logging:
+  level:
+    root: WARN
+    com.enterprise.agentic: INFO
