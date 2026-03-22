@@ -1,0 +1,8 @@
+orchestrator:
+  rag-service-url: http://localhost:8110
+  llm-service-url: http://localhost:8100
+  tools-service-url: http://localhost:8120
+
+logging:
+  level:
+    com.enterprise.agentic: DEBUG
