@@ -69,6 +69,19 @@ public final class TextUtils {
                 : text.substring(0, maxLength);
     }
 
+    //  Clean text by removing newlines, tabs, and normalizing whitespace
+    public static String cleanText(String text) {
+        if (text == null) return null;
+        if (text.isEmpty()) return "";
+
+        return text
+                .replaceAll("\\n", " ")
+                .replaceAll("\\r", " ")
+                .replaceAll("\\t", " ")
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
     //  Full preprocessing pipeline (BEST PRACTICE)
     public static String preprocessLog(String log) {
 

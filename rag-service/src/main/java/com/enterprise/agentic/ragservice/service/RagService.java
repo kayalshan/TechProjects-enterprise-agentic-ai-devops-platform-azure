@@ -1,8 +1,12 @@
 package com.enterprise.agentic.ragservice.service;
 
+import com.enterprise.agentic.ragservice.client.EmbeddingClient;
+import com.enterprise.agentic.ragservice.client.VectorSearchClient;
 import com.enterprise.agentic.ragservice.dto.RagRequest;
 import com.enterprise.agentic.ragservice.dto.RagResponse;
+import com.enterprise.agentic.ragservice.repository.InMemoryRagRepository;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class RagService {
@@ -27,7 +31,7 @@ public class RagService {
 
                 .flatMap(vectorClient::search)
 
-                .map(context -> new RagResponse(context))
+                .map(contexts -> new RagResponse(String.join(" ", contexts)))
 
                 //  fallback if vector fails
                 .onErrorResume(ex -> {

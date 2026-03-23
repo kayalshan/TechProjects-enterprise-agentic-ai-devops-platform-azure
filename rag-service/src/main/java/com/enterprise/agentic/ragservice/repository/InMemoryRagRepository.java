@@ -1,4 +1,9 @@
+package com.enterprise.agentic.ragservice.repository;
+
+import org.springframework.stereotype.Repository;
+
 import java.util.Locale;
+import java.util.Map;
 
 @Repository
 public class InMemoryRagRepository {

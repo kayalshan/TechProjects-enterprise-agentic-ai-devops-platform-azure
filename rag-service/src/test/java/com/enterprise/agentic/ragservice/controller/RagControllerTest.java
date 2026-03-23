@@ -54,9 +54,11 @@ class RagControllerTest {
     @Test
     void shouldReturnHealthCheckResponse() {
         // When
-        String result = controller.ping();
+        Mono<String> result = controller.ping();
 
         // Then
-        assert(result.equals("RAG Service is running"));
+        StepVerifier.create(result)
+                .expectNextMatches(response -> response.equals("RAG Service is up"))
+                .verifyComplete();
     }
 }

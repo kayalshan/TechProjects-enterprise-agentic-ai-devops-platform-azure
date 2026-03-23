@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "rag")
 public class RagProperties {
 
-    private String embeddingUrl;
-    private String embeddingDeployment;
-    private String searchUrl;
-    private String indexName;
-    private String apiKey;
+    private String embeddingUrl = "https://default-embedding.openai.com";
+    private String embeddingDeployment = "text-embedding-ada-002";
+    private String searchUrl = "https://default-search.windows.net";
+    private String indexName = "default-index";
+    private String apiKey = "default-key";
 
     // Getters and setters
     public String getEmbeddingUrl() {
