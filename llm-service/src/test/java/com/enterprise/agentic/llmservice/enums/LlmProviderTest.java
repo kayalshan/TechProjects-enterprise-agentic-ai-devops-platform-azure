@@ -8,28 +8,23 @@ class LlmProviderTest {
 
     @Test
     void shouldHaveAllExpectedProviders() {
-        // When
         LlmProvider[] providers = LlmProvider.values();
-
-        // Then
-        assertTrue(providers.length >= 3); // At least OPENAI, AZURE_OPENAI, LOCAL
+        assertArrayEquals(new LlmProvider[]{LlmProvider.OPENAI, LlmProvider.AZURE, LlmProvider.LOCAL}, providers);
     }
 
     @Test
-    void shouldFindProviderByName() {
-        // When & Then
-        assertDoesNotThrow(() -> LlmProvider.valueOf("OPENAI"));
-        assertDoesNotThrow(() -> LlmProvider.valueOf("AZURE_OPENAI"));
-        assertDoesNotThrow(() -> LlmProvider.valueOf("LOCAL"));
+    void shouldMapProviderNamesFreely() {
+        assertEquals(LlmProvider.OPENAI, LlmProvider.from("openai"));
+        assertEquals(LlmProvider.AZURE, LlmProvider.from("azure"));
+        assertEquals(LlmProvider.AZURE, LlmProvider.from("azure_openai"));
+        assertEquals(LlmProvider.LOCAL, LlmProvider.from("local"));
+        assertEquals(LlmProvider.OPENAI, LlmProvider.from("unknown"));
+        assertEquals(LlmProvider.OPENAI, LlmProvider.from(null));
     }
 
     @Test
     void shouldHaveValidProviderNames() {
-        // When
-        LlmProvider[] providers = LlmProvider.values();
-
-        // Then
-        for (LlmProvider provider : providers) {
+        for (LlmProvider provider : LlmProvider.values()) {
             assertNotNull(provider.name());
             assertFalse(provider.name().isEmpty());
         }

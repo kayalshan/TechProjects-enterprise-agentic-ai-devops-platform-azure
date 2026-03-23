@@ -7,40 +7,30 @@ import static org.junit.jupiter.api.Assertions.*;
 class LlmRequestTest {
 
     @Test
-    void shouldCreateLlmRequestWithAllFields() {
-        // Given
-        String query = "Analyze this error log";
-        String model = "gpt-4";
-        double temperature = 0.7;
+    void shouldCreateLlmRequestWithLogAndContext() {
+        String logMessage = "ERROR: Disk full";
+        String context = "production";
 
-        // When
-        LlmRequest request = new LlmRequest(query, model, temperature);
+        LlmRequest request = new LlmRequest(logMessage, context);
 
-        // Then
-        assertEquals(query, request.query());
-        assertEquals(model, request.model());
-        assertEquals(temperature, request.temperature());
+        assertEquals(logMessage, request.logMessage());
+        assertEquals(context, request.context());
     }
 
     @Test
-    void shouldCreateEqualRequests() {
-        // Given
-        LlmRequest request1 = new LlmRequest("test query", "gpt-3.5-turbo", 0.5);
-        LlmRequest request2 = new LlmRequest("test query", "gpt-3.5-turbo", 0.5);
+    void shouldSupportEquality() {
+        LlmRequest request1 = new LlmRequest("a", "b");
+        LlmRequest request2 = new LlmRequest("a", "b");
 
-        // Then
         assertEquals(request1, request2);
         assertEquals(request1.hashCode(), request2.hashCode());
     }
 
     @Test
-    void shouldCreateDifferentRequests() {
-        // Given
-        LlmRequest request1 = new LlmRequest("query1", "gpt-4", 0.7);
-        LlmRequest request2 = new LlmRequest("query2", "gpt-3.5-turbo", 0.5);
+    void shouldSupportInequality() {
+        LlmRequest request1 = new LlmRequest("a", "b");
+        LlmRequest request2 = new LlmRequest("x", "y");
 
-        // Then
         assertNotEquals(request1, request2);
-        assertNotEquals(request1.hashCode(), request2.hashCode());
     }
 }

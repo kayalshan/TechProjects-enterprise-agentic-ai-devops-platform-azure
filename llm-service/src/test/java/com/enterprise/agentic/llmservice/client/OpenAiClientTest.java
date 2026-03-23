@@ -7,10 +7,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class LocalLlmClientTest {
+class OpenAiClientTest {
 
     @Test
-    void shouldConstructLocalLlmClient() {
+    void shouldConstructOpenAiClient() {
         WebClient.Builder builder = Mockito.mock(WebClient.Builder.class);
         WebClient webClient = Mockito.mock(WebClient.class);
 
@@ -18,9 +18,9 @@ class LocalLlmClientTest {
         Mockito.when(builder.build()).thenReturn(webClient);
 
         LlmProperties props = new LlmProperties();
-        props.setLocalUrl("http://localhost");
+        props.setOpenaiUrl("http://localhost");
 
-        LocalLlmClient client = new LocalLlmClient(builder, props);
+        OpenAiClient client = new OpenAiClient(builder, props);
 
         assertNotNull(client);
     }

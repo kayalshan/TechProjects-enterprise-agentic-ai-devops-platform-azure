@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LlmExceptionTest {
 
     @Test
-    void shouldCreateExceptionWithMessage() {
+    void shouldCreateExceptionWithDefaultCodeAndMessage() {
         // Given
         String message = "LLM service error";
 
@@ -16,29 +16,28 @@ class LlmExceptionTest {
 
         // Then
         assertEquals(message, exception.getMessage());
-        assertNull(exception.getCause());
+        assertEquals("LLM_ERROR", exception.getErrorCode());
     }
 
     @Test
-    void shouldCreateExceptionWithMessageAndCause() {
+    void shouldCreateExceptionWithCodeAndMessageAndCause() {
         // Given
+        String errorCode = "INVALID_INPUT";
         String message = "LLM service error";
         Throwable cause = new RuntimeException("Root cause");
 
         // When
-        LlmException exception = new LlmException(message, cause);
+        LlmException exception = new LlmException(errorCode, message, cause);
 
         // Then
         assertEquals(message, exception.getMessage());
+        assertEquals(errorCode, exception.getErrorCode());
         assertEquals(cause, exception.getCause());
     }
 
     @Test
     void shouldBeRuntimeException() {
-        // Given
         LlmException exception = new LlmException("Test");
-
-        // Then
         assertTrue(exception instanceof RuntimeException);
     }
 }

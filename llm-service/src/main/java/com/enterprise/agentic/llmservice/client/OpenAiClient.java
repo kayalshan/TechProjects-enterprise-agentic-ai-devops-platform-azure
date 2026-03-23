@@ -1,9 +1,12 @@
 package com.enterprise.agentic.llmservice.client;
 
-import com.enterprise.agentic.llmservice.dto.LlmRequest;
-import org.springframework.beans.factory.annotation.Value;
+import com.enterprise.agentic.llmservice.config.LlmProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class OpenAiClient implements LlmClient {

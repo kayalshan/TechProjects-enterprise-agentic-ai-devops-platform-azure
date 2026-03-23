@@ -61,6 +61,12 @@ public class WebClientConfig {
                 .filter(errorHandler());
     }
 
+    // ✅ WebClient instance using the configured builder
+    @Bean
+    public WebClient webClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder.build();
+    }
+
     // ✅ Logging Request
     private ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(request -> {
