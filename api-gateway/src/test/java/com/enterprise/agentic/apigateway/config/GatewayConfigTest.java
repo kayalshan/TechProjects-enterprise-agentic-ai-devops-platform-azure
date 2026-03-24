@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = GatewayConfig.class)
+@SpringBootTest
 @TestPropertySource(properties = {
         "gateway.agent-orchestrator-url=http://agent-orchestrator:8084",
         "gateway.llm-service-url=http://llm-service:8083",
@@ -30,6 +30,6 @@ class GatewayConfigTest {
 
         assertThat(routes).isNotNull();
         assertThat(routes).extracting(Route::getId)
-                .containsExactlyInAnyOrder("orchestrator-service", "llm-service", "rag-service", "tools-service");
+                .containsExactlyInAnyOrder("agent-orchestrator", "llm-service", "rag-service", "tools-service");
     }
 }
