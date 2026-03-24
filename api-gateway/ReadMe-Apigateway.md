@@ -56,7 +56,6 @@ Agent Orchestrator
 ```text id="ap2"
 api-gateway/
 ├── config/
-│   ├── GatewayConfig.java
 │   └── CorsConfig.java
 │
 ├── filter/
