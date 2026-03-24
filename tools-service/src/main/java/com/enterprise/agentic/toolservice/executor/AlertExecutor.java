@@ -20,5 +20,3 @@ public class AlertExecutor implements ToolExecutor {
         return Mono.just(new ToolsResponse("SUCCESS", "Alert sent for: " + request.target()));
     }
 }
-    }
-}

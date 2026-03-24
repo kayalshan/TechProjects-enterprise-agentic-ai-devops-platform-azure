@@ -18,8 +18,9 @@ public class ToolsService {
 
     public Mono<ToolsResponse> execute(ToolsRequest request) {
 
-        ToolExecutor executor = factory.getExecutor(request.toolName());
-
-        return executor.execute(request);
+        return Mono.defer(() -> {
+            ToolExecutor executor = factory.getExecutor(request.toolName());
+            return executor.execute(request);
+        });
     }
 }

@@ -24,6 +24,7 @@ public class RestartServiceExecutor implements ToolExecutor {
     public Mono<ToolsResponse> execute(ToolsRequest request) {
 
         return client.restart(request.target())
-                .then(Mono.just(new ToolsResponse("SUCCESS", "Service restarted: " + request.target())));
+                .then(Mono.just(new ToolsResponse("SUCCESS", "Service restarted: " + request.target())))
+                .onErrorResume(ex -> Mono.just(new ToolsResponse("FAILED", "Failed to restart service: " + ex.getMessage())));
     }
 }

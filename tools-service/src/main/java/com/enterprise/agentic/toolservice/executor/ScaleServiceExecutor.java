@@ -25,7 +25,8 @@ public class ScaleServiceExecutor implements ToolExecutor {
         try {
             int replicas = Integer.parseInt(request.metadata());
             return client.scale(request.target(), replicas)
-                    .then(Mono.just(new ToolsResponse("SUCCESS", "Scaled service: " + request.target() + " to " + replicas + " replicas")));
+                    .then(Mono.just(new ToolsResponse("SUCCESS", "Scaled service: " + request.target() + " to " + replicas + " replicas")))
+                    .onErrorResume(ex -> Mono.just(new ToolsResponse("FAILED", "Failed to scale service: " + ex.getMessage())));
         } catch (NumberFormatException e) {
             return Mono.just(new ToolsResponse("FAILED", "Invalid replica count: " + request.metadata()));
         }
