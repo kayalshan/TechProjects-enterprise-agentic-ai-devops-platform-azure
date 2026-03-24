@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // ✅ Handle LLM Exception
+    //  Handle LLM Exception
     @ExceptionHandler(LlmException.class)
     public Mono<ResponseEntity<Map<String, Object>>> handleLlmException(LlmException ex) {
 
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // ✅ Handle Illegal Arguments
+    //  Handle Illegal Arguments
     @ExceptionHandler(IllegalArgumentException.class)
     public Mono<ResponseEntity<Map<String, Object>>> handleBadRequest(IllegalArgumentException ex) {
 
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // ✅ Handle All Other Exceptions
+    //  Handle All Other Exceptions
     @ExceptionHandler(Exception.class)
     public Mono<ResponseEntity<Map<String, Object>>> handleGeneric(Exception ex) {
 
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // ✅ Standard Response Builder
+    //  Standard Response Builder
     private Map<String, Object> buildResponse(String code, String message, HttpStatus status) {
 
         return Map.of(

@@ -1,0 +1,24 @@
+server:
+  port: 8100
+
+spring:
+  application:
+    name: llm-service
+  profiles:
+    active: dev
+
+llm:
+  provider: ${LLM_PROVIDER:openai}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    root: INFO

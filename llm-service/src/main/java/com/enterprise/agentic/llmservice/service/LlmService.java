@@ -1,17 +1,18 @@
 package com.enterprise.agentic.llmservice.service;
 
-import com.enterprise.agentic.llmservice.dto.LlmRequest;
-import com.enterprise.agentic.llmservice.dto.LlmResponse;
-import com.enterprise.agentic.llmservice.enums.LlmProvider;
-import com.enterprise.agentic.llmservice.exception.LlmServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import com.enterprise.agentic.llmservice.client.OpenAiClient;
 import com.enterprise.agentic.llmservice.client.AzureOpenAiClient;
+import com.enterprise.agentic.llmservice.client.LlmClient;
 import com.enterprise.agentic.llmservice.client.LocalLlmClient;
-import java.time.LocalDateTime;
+import com.enterprise.agentic.llmservice.client.OpenAiClient;
+import com.enterprise.agentic.llmservice.config.LlmProperties;
+import com.enterprise.agentic.llmservice.dto.LlmRequest;
+import com.enterprise.agentic.llmservice.dto.RcaResponse;
 import com.enterprise.agentic.llmservice.enums.LlmProvider;
+import com.enterprise.agentic.llmservice.util.JsonUtils;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
 
 
 @Service

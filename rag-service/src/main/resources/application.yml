@@ -1,12 +1,24 @@
 server:
-  port: 8082
+  port: 8110
 
 spring:
   application:
     name: rag-service
-  jackson:
-    serialization:
-      INDENT_OUTPUT: true
+  profiles:
+    active: dev
+
+rag:
+  provider: ${RAG_PROVIDER:azure}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
 logging:
   level:
     root: INFO

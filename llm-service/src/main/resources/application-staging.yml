@@ -1,0 +1,13 @@
+llm:
+  provider: azure
+  openai-url: https://api.openai.com
+  openai-api-key: ${OPENAI_API_KEY}
+  azure-url: ${AZURE_OPENAI_URL}
+  azure-deployment: ${AZURE_DEPLOYMENT:gpt-4}
+  azure-api-key: ${AZURE_API_KEY}
+  local-url: http://localhost:11434
+
+logging:
+  level:
+    root: INFO
+    com.enterprise.agentic: DEBUG

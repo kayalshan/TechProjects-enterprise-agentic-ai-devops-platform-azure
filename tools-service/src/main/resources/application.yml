@@ -1,0 +1,26 @@
+server:
+  port: 8120
+
+spring:
+  application:
+    name: tools-service
+  profiles:
+    active: dev
+
+tools:
+  azure-subscription-id: ${AZURE_SUBSCRIPTION_ID}
+  azure-resource-group: ${AZURE_RESOURCE_GROUP}
+  azure-workspace-name: ${AZURE_WORKSPACE_NAME}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    root: INFO

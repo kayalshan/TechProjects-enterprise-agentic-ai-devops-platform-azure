@@ -11,7 +11,7 @@ services:
   agent-orchestrator:
     build: ./agent-orchestrator
     ports:
-      - "8090:8090"
+      - "8084:8084"
     depends_on:
       - llm-service
       - rag-service

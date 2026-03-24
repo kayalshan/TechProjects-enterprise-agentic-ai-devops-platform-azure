@@ -1,0 +1,9 @@
+tools:
+  azure-subscription-id: ${AZURE_SUBSCRIPTION_ID}
+  azure-resource-group: ${AZURE_RESOURCE_GROUP}
+  azure-workspace-name: ${AZURE_WORKSPACE_NAME}
+
+logging:
+  level:
+    root: INFO
+    com.enterprise.agentic: DEBUG
