@@ -1,5 +1,0 @@
-/workspaces/TechProjects-enterprise-agentic-ai-devops-platform-azure/api-gateway/src/test/java/com/enterprise/agentic/apigateway/config/CorsConfigTest.java
-/workspaces/TechProjects-enterprise-agentic-ai-devops-platform-azure/api-gateway/src/test/java/com/enterprise/agentic/apigateway/config/GatewayConfigTest.java
-/workspaces/TechProjects-enterprise-agentic-ai-devops-platform-azure/api-gateway/src/test/java/com/enterprise/agentic/apigateway/exception/GlobalExceptionHandlerTest.java
-/workspaces/TechProjects-enterprise-agentic-ai-devops-platform-azure/api-gateway/src/test/java/com/enterprise/agentic/apigateway/filter/AuthenticationFilterTest.java
-/workspaces/TechProjects-enterprise-agentic-ai-devops-platform-azure/api-gateway/src/test/java/com/enterprise/agentic/apigateway/filter/LoggingFilterTest.java
