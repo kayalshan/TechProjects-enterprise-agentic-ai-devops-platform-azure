@@ -4,14 +4,14 @@ services:
   api-gateway:
     build: ./api-gateway
     ports:
-      - "8080:8080"
+      - "8100:8100"
     depends_on:
       - agent-orchestrator
 
   agent-orchestrator:
     build: ./agent-orchestrator
     ports:
-      - "8084:8084"
+      - "8110:8110"
     depends_on:
       - llm-service
       - rag-service
@@ -20,14 +20,14 @@ services:
   llm-service:
     build: ./llm-service
     ports:
-      - "8100:8100"
+      - "8120:8120"
 
   rag-service:
     build: ./rag-service
     ports:
-      - "8110:8110"
+      - "8130:8130"
 
   tools-service:
     build: ./tools-service
     ports:
-      - "8120:8120"
+      - "8140:8140"

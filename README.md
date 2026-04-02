@@ -142,8 +142,8 @@ Agent Orchestrator (Workflow Engine / Brain)
 ## End-to-End Workflow
 
 ```text
-1. Client submits log via API Gateway
-2. Gateway routes request to Orchestrator
+1. Client submits log via API Gateway (POST /api/orchestrator/analyze-log)
+2. Gateway applies authentication/CORS policies and routes request
 3. Orchestrator invokes RAG Service
 4. RAG retrieves contextual data from vector DB
 5. Orchestrator sends enriched data to LLM Service
@@ -301,7 +301,16 @@ kubectl apply -f infra/k8s/
 
 ---
 
-## Observability & Reliability (Planned Enhancements)
+## Observability & Reliability
+
+Implemented baseline hardening:
+
+* JWT validation support in API Gateway (enabled in prod profile)
+* Environment-driven CORS allow-list for API Gateway
+* Sanitized generic internal error responses in Tools Service
+* Correct gateway path rewrite behavior with `StripPrefix=1`
+
+Planned enhancements:
 
 * Distributed tracing (OpenTelemetry)
 * Metrics and monitoring (Prometheus + Grafana)

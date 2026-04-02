@@ -41,8 +41,9 @@ class GlobalExceptionHandlerTest {
                 .expectNextMatches(entity -> {
                     Map<String, Object> body = entity.getBody();
                     return entity.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR &&
-                           "Unexpected error".equals(body.get("error")) &&
-                           body.get("status").equals(500);
+                           "Internal server error".equals(body.get("error")) &&
+                           body.get("status").equals(500) &&
+                           body.get("errorId") != null;
                 })
                 .verifyComplete();
     }

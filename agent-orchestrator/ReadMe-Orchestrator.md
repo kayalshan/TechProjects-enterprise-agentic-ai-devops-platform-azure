@@ -103,7 +103,7 @@ agent-orchestrator/
 
 ### Execute AI Workflow
 
-POST `/orchestrator/execute-task`
+POST `/orchestrator/analyze-log`
 
 #### Request
 

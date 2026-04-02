@@ -26,7 +26,7 @@ RUN addgroup --system appgroup && adduser --system appuser --ingroup appgroup
 USER appuser
 
 # Expose port
-EXPOSE 8081
+EXPOSE 8120
 
 # JVM optimizations
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8100
 
 spring:
   application:
@@ -8,31 +8,39 @@ spring:
     active: dev
   cloud:
     gateway:
+      default-filters:
+        - name: Authentication
+          args:
+            enabled: true
+            validateToken: ${gateway.security.validate-token:false}
+            jwtSecret: ${JWT_SECRET:}
+            requiredIssuer: ${JWT_ISSUER:}
+            clockSkewSeconds: ${gateway.security.clock-skew-seconds:30}
       routes:
         - id: agent-orchestrator
           uri: ${gateway.agent-orchestrator-url}
           predicates:
             - Path=/api/orchestrator/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: llm-service
           uri: ${gateway.llm-service-url}
           predicates:
             - Path=/api/llm/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: rag-service
           uri: ${gateway.rag-service-url}
           predicates:
             - Path=/api/rag/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
         - id: tools-service
           uri: ${gateway.tools-service-url}
           predicates:
             - Path=/api/tools/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
 
 management:
   endpoints:
@@ -46,3 +54,10 @@ management:
 logging:
   level:
     root: INFO
+
+gateway:
+  security:
+    validate-token: false
+    clock-skew-seconds: 30
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:8100,https://localhost

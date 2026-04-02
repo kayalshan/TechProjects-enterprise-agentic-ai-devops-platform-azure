@@ -118,6 +118,11 @@ AZURE_OPENAI_URL=https://your-resource.openai.azure.com
 AZURE_API_KEY=your_azure_key
 AZURE_DEPLOYMENT=gpt-4
 
+# API Gateway
+JWT_SECRET=replace_with_minimum_32_char_secret
+JWT_ISSUER=your-token-issuer
+GATEWAY_ALLOWED_ORIGINS=https://app.company.com
+
 # RAG Service
 AZURE_EMBEDDING_URL=https://your-resource.openai.azure.com
 AZURE_EMBEDDING_DEPLOYMENT=text-embedding-ada-002
@@ -192,7 +197,7 @@ Enabled by default with min 1, max 10 nodes per node pool.
 kubectl logs -f deployment/agent-orchestrator
 
 # Check service health
-kubectl exec -it deployment/agent-orchestrator -- curl http://localhost:8084/actuator/health
+kubectl exec -it deployment/agent-orchestrator -- curl http://localhost:8110/actuator/health
 
 # Debug network issues
 kubectl get services

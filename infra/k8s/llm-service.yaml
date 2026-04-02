@@ -18,20 +18,20 @@ spec:
         - name: llm-service
           image: llm-service:latest
           ports:
-            - containerPort: 8081
+            - containerPort: 8120
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
           livenessProbe:
             httpGet:
               path: /ping
-              port: 8081
+              port: 8120
             initialDelaySeconds: 10
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /ping
-              port: 8081
+              port: 8120
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
@@ -51,5 +51,5 @@ spec:
   selector:
     app: llm-service
   ports:
-    - port: 8081
-      targetPort: 8081
+    - port: 8120
+      targetPort: 8120

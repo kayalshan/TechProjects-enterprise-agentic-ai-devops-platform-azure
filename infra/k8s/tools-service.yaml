@@ -18,20 +18,20 @@ spec:
         - name: tools-service
           image: tools-service:latest
           ports:
-            - containerPort: 8083
+            - containerPort: 8140
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
           livenessProbe:
             httpGet:
               path: /ping
-              port: 8083
+              port: 8140
             initialDelaySeconds: 10
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /ping
-              port: 8083
+              port: 8140
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
@@ -51,5 +51,5 @@ spec:
   selector:
     app: tools-service
   ports:
-    - port: 8083
-      targetPort: 8083
+    - port: 8140
+      targetPort: 8140

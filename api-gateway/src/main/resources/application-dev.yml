@@ -1,8 +1,8 @@
 gateway:
-  agent-orchestrator-url: http://localhost:8084
-  llm-service-url: http://localhost:8100
-  rag-service-url: http://localhost:8110
-  tools-service-url: http://localhost:8120
+  agent-orchestrator-url: http://localhost:8110
+  llm-service-url: http://localhost:8120
+  rag-service-url: http://localhost:8130
+  tools-service-url: http://localhost:8140
 
 logging:
   level:

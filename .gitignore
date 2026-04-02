@@ -8,3 +8,4 @@ agent-orchestrator/target/*.*
 llm-service/target/*.*
 rag-service/target/*.*
 tools-service/target/*.*
+target/

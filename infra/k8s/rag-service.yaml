@@ -18,20 +18,20 @@ spec:
         - name: rag-service
           image: rag-service:latest
           ports:
-            - containerPort: 8082
+            - containerPort: 8130
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
           livenessProbe:
             httpGet:
               path: /ping
-              port: 8082
+              port: 8130
             initialDelaySeconds: 10
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /ping
-              port: 8082
+              port: 8130
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
@@ -51,5 +51,5 @@ spec:
   selector:
     app: rag-service
   ports:
-    - port: 8082
-      targetPort: 8082
+    - port: 8130
+      targetPort: 8130

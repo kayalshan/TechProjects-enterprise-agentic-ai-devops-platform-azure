@@ -10,12 +10,12 @@ class OrchestratorPropertiesTest {
     void shouldSetAndGetValues() {
         OrchestratorProperties properties = new OrchestratorProperties();
 
-        properties.setRagServiceUrl("http://localhost:8082");
-        properties.setLlmServiceUrl("http://localhost:8083");
-        properties.setToolsServiceUrl("http://localhost:8084");
+        properties.setRagServiceUrl("http://localhost:8130");
+        properties.setLlmServiceUrl("http://localhost:8120");
+        properties.setToolsServiceUrl("http://localhost:8140");
 
-        assertEquals("http://localhost:8082", properties.getRagServiceUrl());
-        assertEquals("http://localhost:8083", properties.getLlmServiceUrl());
-        assertEquals("http://localhost:8084", properties.getToolsServiceUrl());
+        assertEquals("http://localhost:8130", properties.getRagServiceUrl());
+        assertEquals("http://localhost:8120", properties.getLlmServiceUrl());
+        assertEquals("http://localhost:8140", properties.getToolsServiceUrl());
     }
 }

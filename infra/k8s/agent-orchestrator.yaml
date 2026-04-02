@@ -18,20 +18,20 @@ spec:
         - name: agent-orchestrator
           image: agent-orchestrator:latest
           ports:
-            - containerPort: 8084
+            - containerPort: 8110
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
           livenessProbe:
             httpGet:
               path: /ping
-              port: 8084
+              port: 8110
             initialDelaySeconds: 10
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /ping
-              port: 8084
+              port: 8110
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
@@ -51,5 +51,5 @@ spec:
   selector:
     app: agent-orchestrator
   ports:
-    - port: 8084
-      targetPort: 8084
+    - port: 8110
+      targetPort: 8110

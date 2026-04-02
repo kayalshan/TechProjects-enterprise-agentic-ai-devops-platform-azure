@@ -15,25 +15,25 @@ spec:
               service:
                 name: llm-service
                 port:
-                  number: 8081
+                  number: 8120
           - path: /rag
             pathType: Prefix
             backend:
               service:
                 name: rag-service
                 port:
-                  number: 8082
+                  number: 8130
           - path: /tools
             pathType: Prefix
             backend:
               service:
                 name: tools-service
                 port:
-                  number: 8083
+                  number: 8140
           - path: /orchestrator
             pathType: Prefix
             backend:
               service:
                 name: agent-orchestrator
                 port:
-                  number: 8084
+                  number: 8110

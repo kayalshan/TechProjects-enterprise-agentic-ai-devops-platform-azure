@@ -83,7 +83,7 @@ spring:
     gateway:
       routes:
         - id: orchestrator-service
-          uri: http://agent-orchestrator:8084
+          uri: http://agent-orchestrator:8110
           predicates:
             - Path=/api/orchestrator/**
           filters:
@@ -105,7 +105,7 @@ Authorization: Bearer <token>
 
 * Validates incoming requests
 * Ensures Authorization header is present
-* Can be extended to support JWT validation
+* Validates JWT signature, expiry, and optional issuer when enabled
 
 ---
 
@@ -119,9 +119,9 @@ Authorization: Bearer <token>
 
 ## CORS Configuration
 
-* Allows cross-origin requests
-* Configurable for production security
-* Supports all headers and methods (can be restricted)
+* Allows cross-origin requests only for configured allow-list origins
+* Configurable through `gateway.cors.allowed-origins`
+* Wildcard origins are rejected when credentials are enabled
 
 ---
 
@@ -131,14 +131,14 @@ Authorization: Bearer <token>
 
 ```yaml id="ap5"
 server:
-  port: 8080
+  port: 8100
 
 spring:
   cloud:
     gateway:
       routes:
         - id: orchestrator-service
-          uri: http://agent-orchestrator:8084
+          uri: http://agent-orchestrator:8110
           predicates:
             - Path=/api/orchestrator/**
           filters:
@@ -177,9 +177,10 @@ management:
 
 ### Security
 
-* Replace basic auth check with JWT validation
-* Integrate OAuth2 / Identity Provider
-* Restrict CORS origins
+* JWT validation enabled in production profile
+* Configure JWT secret using `JWT_SECRET`
+* Optionally enforce issuer using `JWT_ISSUER`
+* Restrict CORS origins via `GATEWAY_ALLOWED_ORIGINS`
 
 ---
 

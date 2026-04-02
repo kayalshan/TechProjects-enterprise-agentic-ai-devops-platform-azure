@@ -18,20 +18,20 @@ spec:
         - name: api-gateway
           image: api-gateway:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 8100
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
           livenessProbe:
             httpGet:
               path: /ping
-              port: 8080
+              port: 8100
             initialDelaySeconds: 10
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /ping
-              port: 8080
+              port: 8100
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
@@ -51,8 +51,8 @@ spec:
   selector:
     app: api-gateway
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 8100
+      targetPort: 8100
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -71,25 +71,25 @@ spec:
               service:
                 name: llm-service
                 port:
-                  number: 8081
+                  number: 8120
           - path: /rag
             pathType: Prefix
             backend:
               service:
                 name: rag-service
                 port:
-                  number: 8082
+                  number: 8130
           - path: /tools
             pathType: Prefix
             backend:
               service:
                 name: tools-service
                 port:
-                  number: 8083
+                  number: 8140
           - path: /orchestrator
             pathType: Prefix
             backend:
               service:
                 name: agent-orchestrator
                 port:
-                  number: 8084
+                  number: 8110
